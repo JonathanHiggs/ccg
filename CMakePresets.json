@@ -1,0 +1,431 @@
+{
+    "version": 5,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 24,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "description": "Base options",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "installDir": "${sourceDir}/out/install/${presetName}",
+            "warnings": {
+                "dev": true,
+                "deprecated": true
+            }
+        },
+        {
+            "name": "requires.linux",
+            "description": "Adds a condition that the host system is Linux",
+            "hidden": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "requires.windows",
+            "description": "Adds a condition that the host system is Windows",
+            "hidden": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "setting.developer-mode",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "compiler.clang-18",
+            "description": "Configures the Clang compiler",
+            "hidden": true,
+            "inherits": [ "requires.linux" ],
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_CXX_COMPILER": "clang"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": "Linux"
+                },
+                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+                    "sourceDir": "$env{HOME}/dev/ccg",
+                    "copySourcesOptions": {
+                        "exclusionList": [
+                            ".git",
+                            ".vs",
+                            ".vscode",
+                            "build",
+                            "out"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "compiler.clangcl",
+            "description": "Configures the Clang-CL compiler",
+            "hidden": true,
+            "inherits": [ "requires.windows" ],
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "clang-cl.exe",
+                "CMAKE_CXX_COMPILER": "clang-cl.exe"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": "Windows",
+                    "intelliSenseMode": "windows-clang-x64"
+                }
+            }
+        },
+        {
+            "name": "compiler.gcc-13",
+            "description": "Configures the GCC compiler",
+            "hidden": true,
+            "inherits": [ "requires.linux" ],
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc-13",
+                "CMAKE_CXX_COMPILER": "g++-13"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": "Linux",
+                    "intelliSenseMode": "linux-gcc-x64"
+                },
+                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
+                    "sourceDir": "$env{HOME}/dev/ccg",
+                    "copySourcesOptions": {
+                        "exclusionList": [
+                            ".git",
+                            ".vs",
+                            ".vscode",
+                            "build",
+                            "out"
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "name": "compiler.msvc-14-39",
+            "description": "Configures the MSVC compiler",
+            "hidden": true,
+            "inherits": [ "requires.windows" ],
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "toolset": {
+                "value": "version=14.39",
+                "strategy": "external"
+            },
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": "Windows",
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
+        },
+        {
+            "name": "build.make",
+            "description": "Configures make generator",
+            "hidden": true,
+            "inherits": [ "requires.linux" ],
+            "generator": "Unix Makefiles"
+        },
+        {
+            "name": "build.ninja",
+            "description": "Configures ninja generator",
+            "hidden": true,
+            "generator": "Ninja"
+        },
+        {
+            "name": "variant.debug",
+            "description": "Sets the build type to Debug",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "variant.pdb",
+            "description": "Sets the build type to Release with debug symbols",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "variant.release",
+            "description": "Sets the build type to Release",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "tool.vcpkg",
+            "hidden": true,
+            "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        },
+        {
+            "name": "option.disable-ipo",
+            "hidden": true,
+            "cacheVariables": {
+                "CCG_ENABLE_IPO": "OFF"
+            }
+        },
+        {
+            "name": "option.warnings-as-errors",
+            "hidden": true,
+            "cacheVariables": {
+                "CCG_ENABLE_WARNINGS_AS_ERRORS": "ON"
+            }
+        },
+        {
+            "name": "feature.tests",
+            "hidden": true,
+            "cacheVariables": {
+                "CCG_BUILD_TESTS": "ON"
+            }
+        },
+        {
+            "name": "workflow.dev",
+            "hidden": true,
+            "inherits": [
+                "setting.developer-mode",
+                "tool.vcpkg",
+                "option.disable-ipo",
+                "option.warnings-as-errors",
+                "feature.tests"
+            ]
+        },
+        {
+            "name": "workflow.deploy",
+            "hidden": true,
+            "inherits": [
+                "setting.developer-mode",
+                "tool.vcpkg",
+                "option.disable-ipo",
+                "option.warnings-as-errors"
+            ]
+        },
+        {
+            "name": "clang.debug",
+            "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.debug", "workflow.dev" ]
+        },
+        {
+            "name": "clang.pdb",
+            "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.pdb", "workflow.dev" ]
+        },
+        {
+            "name": "clang.release",
+            "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.dev" ]
+        },
+        {
+            "name": "clang.deploy",
+            "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.deploy" ]
+        },
+        {
+            "name": "clangcl.debug",
+            "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.debug", "workflow.dev" ]
+        },
+        {
+            "name": "clangcl.pdb",
+            "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.pdb", "workflow.dev" ]
+        },
+        {
+            "name": "clangcl.release",
+            "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.dev" ]
+        },
+        {
+            "name": "clangcl.deploy",
+            "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.deploy" ]
+        },
+        {
+            "name": "gcc.debug",
+            "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.debug", "workflow.dev" ]
+        },
+        {
+            "name": "gcc.pdb",
+            "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.pdb", "workflow.dev" ]
+        },
+        {
+            "name": "gcc.release",
+            "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.dev" ]
+        },
+        {
+            "name": "gcc.deploy",
+            "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.deploy" ]
+        },
+        {
+            "name": "msvc.debug",
+            "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.debug", "workflow.dev" ]
+        },
+        {
+            "name": "msvc.pdb",
+            "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.pdb", "workflow.dev" ]
+        },
+        {
+            "name": "msvc.release",
+            "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.dev" ]
+        },
+        {
+            "name": "msvc.deploy",
+            "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.deploy" ]
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "clang.debug",
+            "configurePreset": "clang.debug"
+        },
+        {
+            "name": "clang.pdb",
+            "configurePreset": "clang.pdb"
+        },
+        {
+            "name": "clang.release",
+            "configurePreset": "clang.release"
+        },
+        {
+            "name": "clang.deploy",
+            "configurePreset": "clang.deploy"
+        },
+        {
+            "name": "clangcl.debug",
+            "configurePreset": "clangcl.debug"
+        },
+        {
+            "name": "clangcl.pdb",
+            "configurePreset": "clangcl.pdb"
+        },
+        {
+            "name": "clangcl.release",
+            "configurePreset": "clangcl.release"
+        },
+        {
+            "name": "clangcl.deploy",
+            "configurePreset": "clangcl.deploy"
+        },
+        {
+            "name": "gcc.debug",
+            "configurePreset": "gcc.debug"
+        },
+        {
+            "name": "gcc.pdb",
+            "configurePreset": "gcc.pdb"
+        },
+        {
+            "name": "gcc.release",
+            "configurePreset": "gcc.release"
+        },
+        {
+            "name": "gcc.deploy",
+            "configurePreset": "gcc.deploy"
+        },
+        {
+            "name": "msvc.debug",
+            "configurePreset": "msvc.debug"
+        },
+        {
+            "name": "msvc.pdb",
+            "configurePreset": "msvc.pdb"
+        },
+        {
+            "name": "msvc.release",
+            "configurePreset": "msvc.release"
+        },
+        {
+            "name": "msvc.deploy",
+            "configurePreset": "msvc.deploy"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "clang.debug",
+            "configurePreset": "clang.debug"
+        },
+        {
+            "name": "clang.pdb",
+            "configurePreset": "clang.pdb"
+        },
+        {
+            "name": "clang.release",
+            "configurePreset": "clang.release"
+        },
+        {
+            "name": "clang.deploy",
+            "configurePreset": "clang.deploy"
+        },
+        {
+            "name": "clangcl.debug",
+            "configurePreset": "clangcl.debug"
+        },
+        {
+            "name": "clangcl.pdb",
+            "configurePreset": "clangcl.pdb"
+        },
+        {
+            "name": "clangcl.release",
+            "configurePreset": "clangcl.release"
+        },
+        {
+            "name": "clangcl.deploy",
+            "configurePreset": "clangcl.deploy"
+        },
+        {
+            "name": "gcc.debug",
+            "configurePreset": "gcc.debug"
+        },
+        {
+            "name": "gcc.pdb",
+            "configurePreset": "gcc.pdb"
+        },
+        {
+            "name": "gcc.release",
+            "configurePreset": "gcc.release"
+        },
+        {
+            "name": "gcc.deploy",
+            "configurePreset": "gcc.deploy"
+        },
+        {
+            "name": "msvc.debug",
+            "configurePreset": "msvc.debug"
+        },
+        {
+            "name": "msvc.pdb",
+            "configurePreset": "msvc.pdb"
+        },
+        {
+            "name": "msvc.release",
+            "configurePreset": "msvc.release"
+        },
+        {
+            "name": "msvc.deploy",
+            "configurePreset": "msvc.deploy"
+        }
+    ]
+}
