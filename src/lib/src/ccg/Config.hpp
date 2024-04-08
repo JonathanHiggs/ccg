@@ -3,20 +3,22 @@
 #include "ccg/Context.hpp"
 #include "ccg/Logging.hpp"
 
+#include <nlohmann/json.hpp>
+
 #include <filesystem>
 #include <iosfwd>
-#include <vector>
 
 
 namespace ccg
 {
 
 /**
- * @brief Configuration settings passed to and used to control file generation
+ * @brief Configuration settings used to control file generation
  */
 struct Config final
 {
-    std::vector<std::filesystem::path> templatesDirs;
+    std::filesystem::path templatesDirectory;
+    nlohmann::json data;
 };
 
 

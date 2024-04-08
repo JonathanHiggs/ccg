@@ -28,15 +28,23 @@ Context MakeContext(int argc, char ** argv)
     auto const inputFile = GetPathFromArgs(1, argv);
     auto const configFile = GetPathFromArgs(2, argv);
 
-    auto const binaryDir = GetPathFromArgs(3, argv);
-    auto const currentBinaryDir = GetPathFromArgs(4, argv);
+    auto const binaryDirectory = GetPathFromArgs(3, argv);
+    auto const currentBinaryDirectory = GetPathFromArgs(4, argv);
 
-    auto const sourceDir = GetPathFromArgs(5, argv);
-    auto const currentSourceDir = GetPathFromArgs(6, argv);
+    auto const sourceDirectory = GetPathFromArgs(5, argv);
+    auto const currentSourceDirectory = GetPathFromArgs(6, argv);
+
+    auto const logDirectory = currentBinaryDirectory / "ccg";
 
     // ToDo: fixup paths (& apply macros?)
 
-    return Context{ inputFile, configFile, binaryDir, sourceDir, currentBinaryDir, currentSourceDir };
+    return Context{ inputFile,
+                    configFile,
+                    logDirectory,
+                    binaryDirectory,
+                    currentBinaryDirectory,
+                    sourceDirectory,
+                    currentSourceDirectory };
 }
 
 }  // namespace ccg

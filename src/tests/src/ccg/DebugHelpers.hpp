@@ -18,4 +18,10 @@ namespace ccg
  */
 [[nodiscard]] Context MakeEmptyContext();
 
+
+/**
+ * @brief Returns an dummy context
+ */
+[[nodiscard]] Context MakeDummyContext();
+
 }  // namespace ccg

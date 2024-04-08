@@ -35,4 +35,9 @@ Context MakeEmptyContext()
     return Context{ "", "", "", "", "", "" };
 }
 
+Context MakeDummyContext()
+{
+    return Context{ "./input", "./config", "./out/build", "./out/build/current", ".", "./current" };
+}
+
 }  // namespace ccg

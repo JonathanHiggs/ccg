@@ -12,7 +12,7 @@
 namespace ccg::tests
 {
 
-TEST(ConfigTests, EmptyJsonConfig)
+TEST(ConfigTests, MissingTemplatesDirectoryThrows)
 {
     // Arrange
     auto const context = MakeEmptyContext();
@@ -20,14 +20,11 @@ TEST(ConfigTests, EmptyJsonConfig)
 
     auto input = std::istringstream(R"({})");
 
-    // Act
-    auto const result = LoadConfig(std::move(input), context, logger);
-
-    // Assert
-    EXPECT_EQ(result.templatesDirs.size(), 0ul);
+    // Act & Assert
+    EXPECT_ANY_THROW(std::ignore = LoadConfig(std::move(input), context, logger));
 }
 
-TEST(ConfigTests, SingleStringTemplate)
+TEST(ConfigTests, TemplatesAndNoData)
 {
     // Arrange
     auto const context = MakeEmptyContext();
@@ -39,28 +36,8 @@ TEST(ConfigTests, SingleStringTemplate)
     auto const result = LoadConfig(std::move(input), context, logger);
 
     // Assert
-    ASSERT_EQ(result.templatesDirs.size(), 1ul);
-    EXPECT_EQ(result.templatesDirs[0ul], "./templates")
-        << fmt::format("Expected \"{}\" but was \"{}\"", "./templates", result.templatesDirs[0ul]);
-}
-
-TEST(ConfigTests, StringArrayTemplate)
-{
-    // Arrange
-    auto const context = MakeEmptyContext();
-    auto const logger = MakeDebugLogger();
-
-    auto input = std::istringstream(R"({"templates":["./templates1","./templates2"]})");
-
-    // Act
-    auto const result = LoadConfig(std::move(input), context, logger);
-
-    // Assert
-    ASSERT_EQ(result.templatesDirs.size(), 2ul);
-    EXPECT_EQ(result.templatesDirs[0ul], "./templates1")
-        << fmt::format("Expected \"{}\" but was \"{}\"", "./templates1", result.templatesDirs[0ul]);
-    EXPECT_EQ(result.templatesDirs[1ul], "./templates2")
-        << fmt::format("Expected \"{}\" but was \"{}\"", "./templates2", result.templatesDirs[0ul]);
+    EXPECT_EQ(result.templatesDirectory, "./templates")
+        << fmt::format("Expected \"{}\" but was \"{}\"", "./templates", result.templatesDirectory);
 }
 
 }  // namespace ccg::tests

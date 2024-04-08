@@ -1,4 +1,5 @@
 #include "ccg/Config.hpp"
+
 #include "ccg/Macros.hpp"
 
 #include <fmt/std.h>
@@ -14,54 +15,55 @@ namespace ccg
 namespace
 {
 
-    [[nodiscard]] std::filesystem::path ParseTemplatePath(
-        nlohmann::json const& json, Context const& context, LoggerPtr const& logger)
+    /**
+     * @brief Temporary parsing info to help with error feedback
+     */
+    struct ParseContext final
     {
-        if (!json.is_string())
+        Context const & context;
+        LoggerPtr const & logger;
+
+        std::filesystem::path file;
+    };
+
+    [[nodiscard]] std::filesystem::path ParseTemplatesDirectory(nlohmann::json const & json, ParseContext & context)
+    {
+        if (!json.contains("templates"))
         {
-            throw std::runtime_error(
-                "Unable to parse config template path; should be a string");
+            auto message = fmt::format("Unable to parse config; missing \"templates\" field in \"{}\"", context.file);
+            context.logger->error(message);
+            throw std::runtime_error(std::move(message));
         }
 
-        auto value = json.get<std::string>();
-        value = SubstituteMacros(value, context, logger);
+        auto const & templates = json["templates"];
+        if (!templates.is_string())
+        {
+            auto message
+                = fmt::format("Unable to parse config; \"templates\" field is not a string in \"{}\"", context.file);
+            context.logger->error(message);
+            throw std::runtime_error(std::move(message));
+        }
 
-        return std::filesystem::path(value).make_preferred();
+        auto path = SubstitutePathMacros(templates.get<std::string>(), context.context, context.logger);
+        // ToDo: check directory exists
+        // ToDo: ensure trailing '/'
+
+        return path;
     }
 
-    [[nodiscard]] std::vector<std::filesystem::path> ParseTemplatesDirs(
-        nlohmann::json const & json, Context const & context, LoggerPtr const & logger)
+    [[nodiscard]] nlohmann::json ParseData(nlohmann::json const & json, ParseContext &)
     {
-        auto result = std::vector<std::filesystem::path>();
-        if (json.contains("templates"))
+        if (!json.contains("data"))
         {
-            auto const & templates = json["templates"];
-            if (templates.is_array())
-            {
-                result.reserve(templates.size());
-
-                for (auto const & path : templates)
-                {
-                    if (!path.is_string())
-                    {
-                        throw std::runtime_error("Unable to parse config template path; not a string");
-                    }
-
-                    result.emplace_back(ParseTemplatePath(path, context, logger));
-                }
-            }
-            else if (templates.is_string())
-            {
-                result.emplace_back(ParseTemplatePath(templates, context, logger));
-            }
-            else
-            {
-                throw std::runtime_error(
-                    "Unable to parse config templates paths; should be a string or an array of strings");
-            }
+            return {};
         }
 
-        return result;
+        return json["data"];
+    }
+
+    [[nodiscard]] Config ParseConfig(nlohmann::json const & json, ParseContext & context)
+    {
+        return Config{ ParseTemplatesDirectory(json, context), ParseData(json, context) };
     }
 
 }  // namespace
@@ -73,16 +75,22 @@ Config LoadConfig(Context const & context, LoggerPtr const & logger)
     {
         auto message = fmt::format("Config file not found: \"{}\"", context.configFile);
         logger->error(message);
-        throw std::runtime_error(message.c_str());
+        throw std::runtime_error(std::move(message));
     }
 
-    return LoadConfig(std::ifstream{ context.configFile, std::ios::in | std::ios::binary }, context, logger);
+    auto stream = std::ifstream{ context.configFile, std::ios::in | std::ios::binary };
+    auto json = nlohmann::json::parse(std::move(stream));
+    auto parseContext = ParseContext{ context, logger, context.configFile };
+
+    return ParseConfig(json, parseContext);
 }
 
 [[nodiscard]] Config LoadConfig(std::istream && stream, Context const & context, LoggerPtr const & logger)
 {
-    auto const & json = nlohmann::json::parse(std::move(stream));
-    return Config{ ParseTemplatesDirs(json, context, logger) };
+    auto json = nlohmann::json::parse(std::move(stream));
+    auto parseContext = ParseContext{ context, logger, "" };
+
+    return ParseConfig(json, parseContext);
 }
 
 }  // namespace ccg

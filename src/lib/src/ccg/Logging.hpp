@@ -13,15 +13,9 @@ namespace ccg
  */
 using LoggerPtr = std::shared_ptr<spdlog::logger>;
 
-
-/**
- * @brief Initializes logging
- */
-void InitLogging(std::filesystem::path const & logDirectory);
-
 /**
  * @brief Creates a logger for the given name
  */
-[[nodiscard]] LoggerPtr MakeLogger(std::string name);
+[[nodiscard]] LoggerPtr InitLogging(std::filesystem::path const & logDirectory);
 
 }  // namespace ccg

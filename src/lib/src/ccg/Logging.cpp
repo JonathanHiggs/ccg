@@ -7,52 +7,31 @@
 
 namespace ccg
 {
-namespace
+
+LoggerPtr InitLogging(std::filesystem::path const & logDirectory)
 {
-
-    static bool initialized = false;
-    static std::shared_ptr<spdlog::sinks::basic_file_sink_st> outputSink;
-    static std::shared_ptr<spdlog::sinks::basic_file_sink_st> errorSink;
-    static std::shared_ptr<spdlog::sinks::stdout_sink_st> consoleSink;
-    
-}
-
-
-void InitLogging(std::filesystem::path const & logDirectory)
-{  
-    auto const fixedPath = std::filesystem::absolute(logDirectory).make_preferred();
-    if (!std::filesystem::exists(fixedPath))
+    if (!std::filesystem::exists(logDirectory))
     {
-        std::filesystem::create_directories(fixedPath);
+        std::filesystem::create_directories(logDirectory);
     }
 
-    auto outputFile = fixedPath / "ccg.output.log";
-    outputSink = std::make_shared<spdlog::sinks::basic_file_sink_st>(outputFile.string(), true);
+    auto outputFile = logDirectory / "output.log";
+    auto outputSink = std::make_shared<spdlog::sinks::basic_file_sink_st>(outputFile.string(), true);
     outputSink->set_level(spdlog::level::info);
     outputSink->set_pattern("[%l] %v");
 
-    auto errorFile = fixedPath / "ccg.error.log";
-    errorSink = std::make_shared<spdlog::sinks::basic_file_sink_st>(errorFile.string(), true);
+    auto errorFile = logDirectory / "error.log";
+    auto errorSink = std::make_shared<spdlog::sinks::basic_file_sink_st>(errorFile.string(), true);
     errorSink->set_level(spdlog::level::trace);
     errorSink->set_pattern("[%l] %v");
 
-    consoleSink = std::make_shared<spdlog::sinks::stdout_sink_st>();
+    auto consoleSink = std::make_shared<spdlog::sinks::stdout_sink_st>();
     consoleSink->set_level(spdlog::level::warn);
     consoleSink->set_pattern("[ccg][%l] %v");
 
-    initialized = true;
-}
-
-[[nodiscard]] std::shared_ptr<spdlog::logger> MakeLogger(std::string name)
-{
-    if (!initialized)
-    {
-        throw std::runtime_error("Logging is not initialized");
-    }
-
     auto logger = std::make_shared<spdlog::logger>(
-        std::move(name),
-        std::initializer_list<spdlog::sink_ptr>{ outputSink, errorSink, consoleSink });
+        "ccg",
+        std::initializer_list<spdlog::sink_ptr>{ std::move(outputSink), std::move(errorSink), std::move(consoleSink) });
 
     logger->set_level(spdlog::level::trace);
     logger->trace("Initialized logging");

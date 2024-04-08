@@ -16,12 +16,14 @@ struct Context final
     std::filesystem::path inputFile;
     std::filesystem::path configFile;
 
+    std::filesystem::path logDirectory;
+
     // CMake Information
-    std::filesystem::path binaryDir;
-    std::filesystem::path currentBinaryDir;
+    std::filesystem::path binaryDirectory;
+    std::filesystem::path currentBinaryDirectory;
     
-    std::filesystem::path sourceDir;
-    std::filesystem::path currentSourceDir;
+    std::filesystem::path sourceDirectory;
+    std::filesystem::path currentSourceDirectory;
 };
 
 
