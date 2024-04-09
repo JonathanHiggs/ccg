@@ -31,6 +31,7 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+example/[Oo]ut/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -441,3 +442,8 @@ out/
 renderdoc/
 temp/
 StructLayoutSettings.json
+
+
+## Generated files
+example/src/Verbosity.cpp
+example/src/Verbosity.hpp

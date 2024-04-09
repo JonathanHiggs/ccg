@@ -185,50 +185,10 @@
       }
     },
     {
-      "name": "tool.vcpkg",
-      "hidden": true,
-      "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-    },
-    {
-      "name": "option.disable-ipo",
-      "hidden": true,
-      "cacheVariables": {
-        "CCG_ENABLE_IPO": "OFF"
-      }
-    },
-    {
-      "name": "option.warnings-as-errors",
-      "hidden": true,
-      "cacheVariables": {
-        "CCG_ENABLE_WARNINGS_AS_ERRORS": "ON"
-      }
-    },
-    {
-      "name": "feature.tests",
-      "hidden": true,
-      "cacheVariables": {
-        "CCG_BUILD_TESTS": "ON"
-      }
-    },
-    {
       "name": "workflow.dev",
       "hidden": true,
       "inherits": [
-        "setting.developer-mode",
-        "tool.vcpkg",
-        "option.disable-ipo",
-        "option.warnings-as-errors",
-        "feature.tests"
-      ]
-    },
-    {
-      "name": "workflow.deploy",
-      "hidden": true,
-      "inherits": [
-        "setting.developer-mode",
-        "tool.vcpkg",
-        "option.disable-ipo",
-        "option.warnings-as-errors"
+        "setting.developer-mode"
       ]
     },
     {
@@ -244,10 +204,6 @@
       "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.dev" ]
     },
     {
-      "name": "clang.deploy",
-      "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.deploy" ]
-    },
-    {
       "name": "clangcl.debug",
       "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.debug", "workflow.dev" ]
     },
@@ -258,10 +214,6 @@
     {
       "name": "clangcl.release",
       "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.dev" ]
-    },
-    {
-      "name": "clangcl.deploy",
-      "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.deploy" ]
     },
     {
       "name": "gcc.debug",
@@ -276,10 +228,6 @@
       "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.dev" ]
     },
     {
-      "name": "gcc.deploy",
-      "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.deploy" ]
-    },
-    {
       "name": "msvc.debug",
       "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.debug", "workflow.dev" ]
     },
@@ -291,10 +239,6 @@
       "name": "msvc.release",
       "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.dev" ]
     },
-    {
-      "name": "msvc.deploy",
-      "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.deploy" ]
-    }
   ],
   "buildPresets": [
     {
@@ -310,10 +254,6 @@
       "configurePreset": "clang.release"
     },
     {
-      "name": "clang.deploy",
-      "configurePreset": "clang.deploy"
-    },
-    {
       "name": "clangcl.debug",
       "configurePreset": "clangcl.debug"
     },
@@ -324,10 +264,6 @@
     {
       "name": "clangcl.release",
       "configurePreset": "clangcl.release"
-    },
-    {
-      "name": "clangcl.deploy",
-      "configurePreset": "clangcl.deploy"
     },
     {
       "name": "gcc.debug",
@@ -342,10 +278,6 @@
       "configurePreset": "gcc.release"
     },
     {
-      "name": "gcc.deploy",
-      "configurePreset": "gcc.deploy"
-    },
-    {
       "name": "msvc.debug",
       "configurePreset": "msvc.debug"
     },
@@ -356,76 +288,6 @@
     {
       "name": "msvc.release",
       "configurePreset": "msvc.release"
-    },
-    {
-      "name": "msvc.deploy",
-      "configurePreset": "msvc.deploy"
-    }
-  ],
-  "testPresets": [
-    {
-      "name": "clang.debug",
-      "configurePreset": "clang.debug"
-    },
-    {
-      "name": "clang.pdb",
-      "configurePreset": "clang.pdb"
-    },
-    {
-      "name": "clang.release",
-      "configurePreset": "clang.release"
-    },
-    {
-      "name": "clang.deploy",
-      "configurePreset": "clang.deploy"
-    },
-    {
-      "name": "clangcl.debug",
-      "configurePreset": "clangcl.debug"
-    },
-    {
-      "name": "clangcl.pdb",
-      "configurePreset": "clangcl.pdb"
-    },
-    {
-      "name": "clangcl.release",
-      "configurePreset": "clangcl.release"
-    },
-    {
-      "name": "clangcl.deploy",
-      "configurePreset": "clangcl.deploy"
-    },
-    {
-      "name": "gcc.debug",
-      "configurePreset": "gcc.debug"
-    },
-    {
-      "name": "gcc.pdb",
-      "configurePreset": "gcc.pdb"
-    },
-    {
-      "name": "gcc.release",
-      "configurePreset": "gcc.release"
-    },
-    {
-      "name": "gcc.deploy",
-      "configurePreset": "gcc.deploy"
-    },
-    {
-      "name": "msvc.debug",
-      "configurePreset": "msvc.debug"
-    },
-    {
-      "name": "msvc.pdb",
-      "configurePreset": "msvc.pdb"
-    },
-    {
-      "name": "msvc.release",
-      "configurePreset": "msvc.release"
-    },
-    {
-      "name": "msvc.deploy",
-      "configurePreset": "msvc.deploy"
     }
   ]
 }

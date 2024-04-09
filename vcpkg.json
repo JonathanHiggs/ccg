@@ -1,12 +1,12 @@
 {
-    "name": "ccg",
-    "version": "0.0.1",
-    "dependencies": [
-        "fmt",
-        "gtest",
-        "inja",
-        "nlohmann-json",
-        "spdlog"
-    ],
-    "builtin-baseline": "dafef74af53669ef1cc9015f55e0ce809ead62aa"
+  "name": "ccg",
+  "version": "0.0.1",
+  "dependencies": [
+    "fmt",
+    "gtest",
+    "inja",
+    "nlohmann-json",
+    "spdlog"
+  ],
+  "builtin-baseline": "dafef74af53669ef1cc9015f55e0ce809ead62aa"
 }

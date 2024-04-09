@@ -1,0 +1,123 @@
+{% include "generated-message.jinja" %}
+// clang-format off
+
+#pragma once
+
+#include <array>
+#include <iosfwd>
+#include <optional>
+#include <string_view>
+#include <vector>
+
+
+namespace {{ namespace }}
+{
+
+{% if exists("description") %}
+/**
+ * @brief {{ description }}
+ */
+{% endif %}
+class {{ name }} final
+{
+public:
+    using underlying_type = {% if exists("underlyingType") %}{{ underlyingType }}{% else %}int{% endif %};
+
+    enum ValueType : underlying_type
+    {
+{% for item in items %}
+        {{ item.name }}{% if existsIn(item, "value") %}{{ " = " }}{{ item.value }}{% endif %}{% if not loop.is_last %},{% endif %}
+
+{% endfor %}
+    };
+
+private:
+    ValueType value;
+
+public:
+{% if exists("default") %}
+    /**
+     * @brief Initialized a {{ name }} with the default value of {{ name }}::{{ default }}
+     */
+    constexpr {{ name }}() noexcept : value(ValueType::{{ default }})
+    { }
+
+{% endif %}
+    /**
+     * @brief Initialized a {{ name }} with the specified value
+     */
+    explicit constexpr {{ name }}(ValueType value) noexcept : value(value)
+    { }
+
+    /**
+     * @brief Initialized a {{ name }} parsed from the specified value, or throws if the string is invalid
+     */
+    explicit {{ name }}(std::string_view str);
+
+    /**
+     * @brief Implicit cast to the underlying enum value
+     */
+    [[nodiscard]] constexpr operator ValueType() const noexcept
+    {
+        return value;
+    }
+
+    explicit operator bool() = delete;
+
+    /**
+     * @brief Helper to up-cast from the enum value to the enum type
+     */
+    [[nodiscard]] friend constexpr {{ name }} operator+({{ name }}::ValueType value)
+    {
+        return {{ name }}(value);
+    }
+
+    /**
+     * @brief Helper to retrieve the enum represented as the underling integral type
+     */
+    [[nodiscard]] constexpr underlying_type ToUnderlying() const noexcept
+    {
+        return static_cast<underlying_type>(value);
+    }
+
+    /**
+     * @brief Returns the number of values in the enum
+     */
+    [[nodiscard]] static constexpr size_t Size() noexcept
+    {
+        return {{ length(items) }}ul;
+    }
+
+    /**
+     * @brief Returns an array with all {{ name }} values
+     */
+    [[nodiscard]] static std::array<{{ name }}, {{ length(items) }}ul> const & Values() noexcept;
+
+    /**
+     * @brief Returns the name of the enum
+     */
+    [[nodiscard]] static std::string_view Name() noexcept;
+
+    /**
+     * @brief Returns a string representation of the enum value
+     */
+    [[nodiscard]] std::string_view ToString() const noexcept;
+
+    /**
+     * @brief Inserts a string representation of the enum value in the output stream
+     */
+    friend std::ostream & operator<<(std::ostream & os, {{ name }} value);
+
+    /**
+     * @brief Parses the supplied string into a {{ name }} value, or throws if the string is invalid
+     */
+    [[nodiscard]] static {{ name }} Parse(std::string_view str);
+
+    /**
+     * @brief Tries to parse the supplied string into a {{ name }} value
+     */
+    [[nodiscard]] static std::optional<{{ name }}> TryParse(std::string_view str);
+};
+
+} // namespace {{ namespace }}
+// clang-format on
