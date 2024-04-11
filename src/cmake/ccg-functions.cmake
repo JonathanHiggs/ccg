@@ -1,5 +1,11 @@
+include_guard(GLOBAL)
+
 # Executes code generation for given input and config files
 function(ccg_generate input_data_file config_file)
+    # ToDo: parse args with cmake_parse_arguments
+
+    message(STATUS "Generating code using input data file: ${input_data_file} and config file: ${config_file}")
+
     get_target_property(CCG_EXE ccg::ccg LOCATION)
 
     execute_process(

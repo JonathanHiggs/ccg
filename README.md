@@ -57,7 +57,7 @@ target_compile_options(my-example PRIVATE "/std:c++20")
 target_include_directories(my-example PRIVATE "${CMAKE_SOURCE_DIR}/src")
 ```
 
-`ccg_generate` takes two parameters; paths to an input json file, and a config json file
+`ccg_generate` takes two parameters; paths to an input json file, and a config json file. Under the hood cmake builds a command-line executable that is executed with the supplied config and input files
 
 ### config.json
 
@@ -140,11 +140,13 @@ Specifies the input data that is used during generation
     - `output` - path of the rendered file. The path is relative to `out`, or can be specified with an absolute path using a [macro](#macro-substitutions)
   - `data` - general purpose bag of data passed to template rendering
 
+## Rendering Templates
+
 ## Macro Substitutions
 
-Json files are able to use cmake macro substitutions in non-data fields
+Json files are able to use cmake macro-like substitutions in non-data fields
 
 | Macro              | Description                            | Example                                           |
 |--------------------|----------------------------------------|---------------------------------------------------|
 | `${sourceDir}`     | Substitutes to `${CMAKE_SOURCE_DIR}`   | `"templates": "${sourceDir}/templates/"`          |
-| `${binaryDir}`     | Substitutes to `${CMAKE_BINARY_DIR}`   | `"templates": "${sourceDir}/templates/"`          |
+| `${binaryDir}`     | Substitutes to `${CMAKE_BINARY_DIR}`   | `"out": "${binaryDir}/include/MyFile.hpp"`        |
