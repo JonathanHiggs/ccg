@@ -32,12 +32,12 @@ LoggerPtr const & MakeDebugLogger()
 
 Context MakeEmptyContext()
 {
-    return Context{ "", "", "", "", "", "" };
+    return Context{ "", "", "", "", "", "", "" };
 }
 
 Context MakeDummyContext()
 {
-    return Context{ "./input", "./config", "./out/build", "./out/build/current", ".", "./current" };
+    return Context{ "./input", "./config", "./out/build/current/ccg", "./out/build", "./out/build/current", ".", "./current" };
 }
 
 }  // namespace ccg

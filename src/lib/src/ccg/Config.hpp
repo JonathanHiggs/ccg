@@ -18,6 +18,11 @@ namespace ccg
 struct Config final
 {
     std::filesystem::path templatesDirectory;
+
+    // Maybe:
+    // bool trimBlocks;
+    // bool lstripBlocks;
+
     nlohmann::json data;
 };
 

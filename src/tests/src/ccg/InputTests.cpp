@@ -20,11 +20,8 @@ TEST(InputTests, LoadInputWithEmptyJson)
 
     auto input = std::istringstream(R"({})");
 
-    // Act
-    auto const result = LoadInput(std::move(input), context, logger);
-
-    // Assert
-    EXPECT_EQ(result.items.size(), 0ul);
+    // Act & Assert
+    EXPECT_ANY_THROW(auto _ = LoadInput(std::move(input), context, logger));
 }
 
 TEST(InputTests, ParseSingleOutput)
@@ -34,6 +31,7 @@ TEST(InputTests, ParseSingleOutput)
     auto const logger = MakeDebugLogger();
 
     auto input = std::istringstream(R"({
+  "out": "out/files",
   "items":[
     {
       "name": "item1",
@@ -68,6 +66,7 @@ TEST(InputTests, ParseMultipleOutputs)
     auto const logger = MakeDebugLogger();
 
     auto input = std::istringstream(R"({
+  "out": "out/files",
   "items":[
     {
       "name": "item1",
@@ -108,6 +107,7 @@ TEST(InputTests, ParseMultipleItems)
     auto const logger = MakeDebugLogger();
 
     auto input = std::istringstream(R"({
+  "out": "out/files",
   "items":[
     {
       "name": "item1",
@@ -164,6 +164,7 @@ TEST(InputTests, ParseData)
     auto const logger = MakeDebugLogger();
 
     auto input = std::istringstream(R"({
+  "out": "out/files",
   "items":[
     {
       "name": "item1",

@@ -188,7 +188,7 @@ Input LoadInput(Context const & context, LoggerPtr const & logger)
 
     auto stream = std::ifstream{ context.inputFile, std::ios::in | std::ios::binary };
     auto json = nlohmann::json::parse(std::move(stream));
-    auto parseContext = ParseContext{ context, logger, context.inputFile, "", 0ul };
+    auto parseContext = ParseContext{ context, logger, context.inputFile, "", 0ul, 0ul };
 
     return ParseInput(json, parseContext);
 }
@@ -196,7 +196,7 @@ Input LoadInput(Context const & context, LoggerPtr const & logger)
 Input LoadInput(std::istream && stream, Context const & context, LoggerPtr const & logger)
 {
     auto json = nlohmann::json::parse(std::move(stream));
-    auto parseContext = ParseContext{ context, logger, "", "", 0ul };
+    auto parseContext = ParseContext{ context, logger, "", "", 0ul, 0ul };
 
     return ParseInput(json, parseContext);
 }

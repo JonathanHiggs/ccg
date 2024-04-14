@@ -241,10 +241,6 @@
     },
     {
       "name": "clang.release",
-      "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.dev" ]
-    },
-    {
-      "name": "clang.deploy",
       "inherits": [ "base", "compiler.clang-18", "build.ninja", "variant.release", "workflow.deploy" ]
     },
     {
@@ -257,10 +253,6 @@
     },
     {
       "name": "clangcl.release",
-      "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.dev" ]
-    },
-    {
-      "name": "clangcl.deploy",
       "inherits": [ "base", "compiler.clangcl", "build.ninja", "variant.release", "workflow.deploy" ]
     },
     {
@@ -273,10 +265,6 @@
     },
     {
       "name": "gcc.release",
-      "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.dev" ]
-    },
-    {
-      "name": "gcc.deploy",
       "inherits": [ "base", "compiler.gcc-13", "build.ninja", "variant.release", "workflow.deploy" ]
     },
     {
@@ -289,10 +277,6 @@
     },
     {
       "name": "msvc.release",
-      "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.dev" ]
-    },
-    {
-      "name": "msvc.deploy",
       "inherits": [ "base", "compiler.msvc-14-39", "build.ninja", "variant.release", "workflow.deploy" ]
     }
   ],
@@ -310,10 +294,6 @@
       "configurePreset": "clang.release"
     },
     {
-      "name": "clang.deploy",
-      "configurePreset": "clang.deploy"
-    },
-    {
       "name": "clangcl.debug",
       "configurePreset": "clangcl.debug"
     },
@@ -324,10 +304,6 @@
     {
       "name": "clangcl.release",
       "configurePreset": "clangcl.release"
-    },
-    {
-      "name": "clangcl.deploy",
-      "configurePreset": "clangcl.deploy"
     },
     {
       "name": "gcc.debug",
@@ -342,10 +318,6 @@
       "configurePreset": "gcc.release"
     },
     {
-      "name": "gcc.deploy",
-      "configurePreset": "gcc.deploy"
-    },
-    {
       "name": "msvc.debug",
       "configurePreset": "msvc.debug"
     },
@@ -356,10 +328,6 @@
     {
       "name": "msvc.release",
       "configurePreset": "msvc.release"
-    },
-    {
-      "name": "msvc.deploy",
-      "configurePreset": "msvc.deploy"
     }
   ],
   "testPresets": [
@@ -376,10 +344,6 @@
       "configurePreset": "clang.release"
     },
     {
-      "name": "clang.deploy",
-      "configurePreset": "clang.deploy"
-    },
-    {
       "name": "clangcl.debug",
       "configurePreset": "clangcl.debug"
     },
@@ -390,10 +354,6 @@
     {
       "name": "clangcl.release",
       "configurePreset": "clangcl.release"
-    },
-    {
-      "name": "clangcl.deploy",
-      "configurePreset": "clangcl.deploy"
     },
     {
       "name": "gcc.debug",
@@ -408,10 +368,6 @@
       "configurePreset": "gcc.release"
     },
     {
-      "name": "gcc.deploy",
-      "configurePreset": "gcc.deploy"
-    },
-    {
       "name": "msvc.debug",
       "configurePreset": "msvc.debug"
     },
@@ -422,10 +378,6 @@
     {
       "name": "msvc.release",
       "configurePreset": "msvc.release"
-    },
-    {
-      "name": "msvc.deploy",
-      "configurePreset": "msvc.deploy"
     }
   ]
 }

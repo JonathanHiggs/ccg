@@ -18,7 +18,10 @@ namespace ccg
 void Generate(Input & input, Config const & config, Context const & context, LoggerPtr const & logger)
 {
     auto env = inja::Environment(config.templatesDirectory.string(), input.outDirectory.string());
+
+    // Maybe: set from config
     env.set_trim_blocks(true);
+    env.set_lstrip_blocks(false);
 
     for (auto & item : input.items)
     {
